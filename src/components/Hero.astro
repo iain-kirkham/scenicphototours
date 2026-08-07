@@ -1,0 +1,66 @@
+---
+const { image, title, subtitle, buttonText } = Astro.props;
+---
+
+<section class="hero" style={`background-image: url(${image})`}>
+  <div class="overlay"></div>
+
+  <div class="content">
+    <h1>{title}</h1>
+    <p>{subtitle}</p>
+    <a href="/tours" class="cta">{buttonText}</a>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    height: 80vh;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(16, 20, 24, 0.55);
+  }
+
+  .content {
+    position: relative;
+    text-align: center;
+    color: #F5F5F5;
+    max-width: 700px;
+    padding: 0 24px;
+  }
+
+  h1 {
+    font-size: 3rem;
+    margin-bottom: 16px;
+  }
+
+  p {
+    font-size: 1.3rem;
+    margin-bottom: 32px;
+    color: #E0E0E0;
+  }
+
+  .cta {
+    display: inline-block;
+    background: #E0E0E0;
+    color: #101418;
+    padding: 12px 28px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 600;
+    transition: background 0.2s ease;
+  }
+
+  .cta:hover {
+    background: #cfcfcf;
+  }
+</style>
