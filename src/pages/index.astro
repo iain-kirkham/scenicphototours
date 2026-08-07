@@ -1,17 +1,36 @@
 ---
+import { getCollection } from "astro:content";
+import DestinationCard from "../components/DestinationCard.astro";
 import Layout from "../layouts/Layout.astro";
+
+// Fetch featured tours from the 'tours' content collection (Astro 5 syntax)
+const featuredTours = await getCollection("tours", (tour) => tour.data.featured);
 ---
 
 <Layout>
-  <section class="placeholder">
-    <h1>Home</h1>
-    <p>Homepage content will be added soon.</p>
+  <section class="py-12">
+    <div class="mb-10 text-center">
+      <h2 class="text-3xl font-light tracking-widest text-[#F5F5F5] uppercase">
+        Featured Destinations
+      </h2>
+      <p class="mt-2 text-sm text-[#607D8B]">
+        Explore our upcoming photography expeditions
+      </p>
+    </div>
+
+    {featuredTours.length > 0 ? (
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {featuredTours.map((tour) => (
+              <DestinationCard
+                  title={tour.data.title}
+                  subtitle={tour.data.subtitle}
+                  image={tour.data.image}
+                  href={tour.data.href}
+              />
+          ))}
+        </div>
+    ) : (
+        <p class="text-center text-[#607D8B]">No featured tours found.</p>
+    )}
   </section>
 </Layout>
-
-<style>
-  .placeholder {
-    padding: 80px 24px;
-    color: #f5f5f5;
-  }
-</style>
