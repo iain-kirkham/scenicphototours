@@ -1,5 +1,5 @@
 ---
-const { image, title, subtitle, buttonText } = Astro.props;
+const { image, title, subtitle, buttonText, ctaHref } = Astro.props;
 ---
 
 <section class="hero" style={`background-image: url(${image})`}>
@@ -8,7 +8,7 @@ const { image, title, subtitle, buttonText } = Astro.props;
   <div class="content">
     <h1>{title}</h1>
     <p>{subtitle}</p>
-    <a href="/tours" class="cta">{buttonText}</a>
+    <a href={ctaHref} class="cta">{buttonText}</a>
   </div>
 </section>
 
