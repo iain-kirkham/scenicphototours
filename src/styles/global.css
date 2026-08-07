@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+@import "tailwindcss";
+
+@layer base {
+    :root {
+        --bg-main: #121619;
+        --card-bg: #171c20;
+        --card-border: #232a30;
+        --text-primary: #ffffff;
+        --text-muted: #8c9ba5;
+        --text-accent: #a0aec0;
+    }
+
+    html,
+    body {
+        background-color: var(--bg-main);
+        color: var(--text-primary);
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        min-height: 100vh;
+        margin: 0;
+        padding: 0;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Smooth scroll for navigation anchors */
+    html {
+        scroll-behavior: smooth;
+    }
+
+    /* Custom scrollbar matching the dark theme */
+    ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background: #0d1117;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: #232a30;
+        border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+        background: #3a444d;
+    }
+}

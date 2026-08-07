@@ -1,59 +1,22 @@
-<nav class="navbar">
-  <div class="container">
-    <img
-      src="/src/assets/images/logo.png"
-      alt="Scenic Photo Tours"
-      class="logo"
-    />
+---
+import { links } from "../data/utils";
 
-    <ul class="nav-links">
-      <li><a href="/">Home</a></li>
-      <li><a href="/about">About</a></li>
-      <li><a href="/tours">Tours</a></li>
-      <li><a href="/what-to-bring">What to Bring</a></li>
-      <li><a href="/gallery">Gallery</a></li>
-      <li><a href="/testimonials">Testimonials</a></li>
-      <li><a href="/contact">Contact</a></li>
-    </ul>
-  </div>
-</nav>
+const currentPath = Astro.url.pathname;
+---
 
-<style>
-  .navbar {
-    position: absolute;
-    top: 0;
-    width: 100%;
-    padding: 20px 0;
-    z-index: 20;
-  }
-
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 24px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .logo {
-    height: 48px;
-  }
-
-  .nav-links {
-    list-style: none;
-    display: flex;
-    gap: 28px;
-  }
-
-  .nav-links a {
-    color: #f5f5f5;
-    text-decoration: none;
-    font-size: 1rem;
-    transition: opacity 0.2s ease;
-  }
-
-  .nav-links a:hover {
-    opacity: 0.7;
-  }
-</style>
+<div
+    class="nav-links flex flex-col items-center space-y-4 md:flex-row md:items-center md:space-y-0 md:space-x-4 py-2"
+>
+  {links.map((link) => (
+      <a
+          href={link.href}
+          class={`py-1.5 px-3 text-sm rounded-xl transition-colors duration-300 ease-in-out ${
+              currentPath === link.href || (link.href !== "/" && currentPath.startsWith(link.href))
+                  ? "bg-black dark:bg-white text-white dark:text-black"
+                  : "hover:bg-gray-200 hover:dark:bg-gray-700"
+          }`}
+      >
+        {link.text}
+      </a>
+  ))}
+</div>

@@ -1,0 +1,97 @@
+---
+import NavBar from "./NavBar.astro"
+---
+
+<header class="mx-auto max-w-7xl px-6 py-6 font-sans">
+    <nav class="flex items-center justify-between">
+        <!-- Logo styled to match the wide letter-spacing uppercase branding -->
+        <a
+                href="/"
+                class="text-xl font-normal text-white transition-opacity duration-300 hover:opacity-80"
+        >
+            Scenic Photo Tours
+        </a>
+
+        <!-- Desktop Navigation -->
+        <div class="hidden items-center md:flex">
+            <NavBar />
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button
+                id="menu-button"
+                type="button"
+                aria-label="Open Menu"
+                aria-controls="mobile-menu"
+                aria-expanded="false"
+                class="inline-flex items-center justify-center rounded-lg p-2 text-gray-300 transition-colors duration-300 hover:bg-zinc-800 hover:text-white md:hidden"
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" viewBox="0 0 448 512" class="fill-current">
+                <path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z" />
+            </svg>
+        </button>
+    </nav>
+
+    <!-- Full-Screen Mobile Menu -->
+    <div
+            id="mobile-menu"
+            class="fixed inset-0 z-50 hidden flex-col items-center justify-center space-y-12 bg-[#121619] text-white md:hidden"
+    >
+        <button
+                id="menu-close"
+                aria-label="Close Menu"
+                class="absolute top-6 right-6 p-2 text-gray-400 transition-colors duration-300 hover:text-white"
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" viewBox="0 0 384 512" class="fill-current">
+                <path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"/>
+            </svg>
+        </button>
+
+        <!-- Mobile Navigation Links -->
+        <div class="text-center">
+            <NavBar />
+        </div>
+    </div>
+</header>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const menuButton = document.getElementById("menu-button");
+        const mobileMenu = document.getElementById("mobile-menu");
+        const menuClose = document.getElementById("menu-close");
+        const mobileLinks = mobileMenu?.querySelectorAll("a");
+
+        const openMenu = () => {
+            if (mobileMenu) {
+                mobileMenu.style.display = "flex";
+            }
+            mobileMenu?.classList.remove("hidden");
+            menuButton?.setAttribute("aria-expanded", "true");
+            document.body.style.overflow = "hidden";
+        };
+
+        const closeMenu = () => {
+            mobileMenu?.classList.add("hidden");
+            if (mobileMenu) {
+                mobileMenu.style.display = "";
+            }
+            menuButton?.setAttribute("aria-expanded", "false");
+            document.body.style.overflow = "";
+        };
+
+        if (menuButton && mobileMenu && menuClose) {
+            menuButton.addEventListener("click", openMenu);
+            menuClose.addEventListener("click", closeMenu);
+
+            mobileLinks?.forEach((link) => {
+                link.addEventListener("click", closeMenu);
+            });
+
+            document.addEventListener("keydown", (event) => {
+                if (event.key === "Escape") {
+                    closeMenu();
+                }
+            });
+        }
+    });
+</script>
