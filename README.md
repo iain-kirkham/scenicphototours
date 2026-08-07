@@ -44,3 +44,13 @@ All commands are run from the root of the project, from a terminal:
 ## 👀 Want to learn more?
 
 Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+
+
+## Palette: Twilight Nordic (Cold & Atmospheric)
+Background: #101418 — Deep Arctic Blue‑Black
+
+Primary Text: #F5F5F5 — Ghost White
+
+Secondary Text: #607D8B — Slate Blue‑Gray
+
+Accents / Buttons: #E0E0E0 — Ice White / Light Gray
