@@ -1,0 +1,156 @@
+---
+import type { ImageMetadata } from "astro";
+import { Image } from "astro:assets";
+
+const imageFiles = import.meta.glob<{ default: ImageMetadata }>(
+    "../assets/galleryImages/*.{jpg,jpeg,png,webp}",
+    { eager: true }
+);
+
+const images: ImageMetadata[] = Object.values(imageFiles).map(
+    (file) => file.default
+);
+---
+
+<div id="gallery-container" class="w-full space-y-4">
+    <!-- Main Display Window -->
+    <div class="relative flex h-125 w-full items-center justify-center overflow-hidden rounded-lg bg-[#161c22]">
+
+        <!-- Left Navigation Button -->
+        <button
+                id="prev-btn"
+                type="button"
+                aria-label="Previous Image"
+                class="absolute left-4 z-30 rounded-full bg-[#101418]/80 p-3 text-[#F5F5F5] backdrop-blur-sm transition-colors hover:bg-[#607D8B] focus:outline-none cursor-pointer pointer-events-auto"
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+        </button>
+
+        <!-- Main Active Image Container -->
+        <div id="main-image-viewport" class="relative z-10 h-full w-full">
+            {images.map((img: ImageMetadata, index: number) => (
+                    <div
+                            class={`gallery-slide absolute inset-0 flex items-center justify-center transition-opacity duration-300 ${
+                                index === 0 ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"
+                            }`}
+                            data-index={index}
+                    >
+                        <Image
+                                src={img}
+                                alt={`Gallery image ${index + 1}`}
+                                class="h-full w-full object-contain pointer-events-none"
+                                widths={[600, 900, 1200]}
+                                sizes="(max-width: 1280px) 100vw, 1200px"
+                                loading={index === 0 ? "eager" : "lazy"}
+                        />
+                    </div>
+            ))}
+        </div>
+
+        <!-- Right Navigation Button -->
+        <button
+                id="next-btn"
+                type="button"
+                aria-label="Next Image"
+                class="absolute right-4 z-30 rounded-full bg-[#101418]/80 p-3 text-[#F5F5F5] backdrop-blur-sm transition-colors hover:bg-[#607D8B] focus:outline-none cursor-pointer pointer-events-auto"
+        >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+        </button>
+    </div>
+
+    <!-- Thumbnails Row -->
+    <div class="relative w-full">
+        <div
+                id="thumbnail-strip"
+                class="flex space-x-3 overflow-x-auto py-2 scrollbar-thin scrollbar-thumb-[#607D8B]"
+        >
+            {images.map((img: ImageMetadata, index: number) => (
+                    <button
+                            type="button"
+                            class={`thumb-btn relative h-20 w-28 shrink-0 overflow-hidden rounded-md border-2 transition-all ${
+                                index === 0 ? "border-[#607D8B] opacity-100" : "border-transparent opacity-50 hover:opacity-100"
+                            }`}
+                            data-index={index}
+                    >
+                        <Image
+                                src={img}
+                                alt={`Thumbnail ${index + 1}`}
+                                class="h-full w-full object-cover"
+                                width={120}
+                                height={80}
+                                loading="lazy"
+                        />
+                    </button>
+            ))}
+        </div>
+    </div>
+</div>
+
+<script>
+    function setupGallery() {
+        const prevBtn = document.getElementById("prev-btn");
+        const nextBtn = document.getElementById("next-btn");
+        const slides = document.querySelectorAll<HTMLElement>(".gallery-slide");
+        const thumbs = document.querySelectorAll<HTMLButtonElement>(".thumb-btn");
+
+        if (!slides.length) return;
+
+        let currentIndex = 0;
+        const total = slides.length;
+
+        function render(index: number) {
+            if (index < 0) currentIndex = total - 1;
+            else if (index >= total) currentIndex = 0;
+            else currentIndex = index;
+
+            slides.forEach((slide, i) => {
+                if (i === currentIndex) {
+                    slide.classList.remove("opacity-0", "z-0", "pointer-events-none");
+                    slide.classList.add("opacity-100", "z-10");
+                } else {
+                    slide.classList.remove("opacity-100", "z-10");
+                    slide.classList.add("opacity-0", "z-0", "pointer-events-none");
+                }
+            });
+
+            thumbs.forEach((thumb, i) => {
+                if (i === currentIndex) {
+                    thumb.classList.add("border-[#607D8B]", "opacity-100");
+                    thumb.classList.remove("border-transparent", "opacity-50");
+                    thumb.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+                } else {
+                    thumb.classList.remove("border-[#607D8B]", "opacity-100");
+                    thumb.classList.add("border-transparent", "opacity-50");
+                }
+            });
+        }
+
+        if (prevBtn) {
+            prevBtn.onclick = (e) => {
+                e.stopPropagation();
+                render(currentIndex - 1);
+            };
+        }
+
+        if (nextBtn) {
+            nextBtn.onclick = (e) => {
+                e.stopPropagation();
+                render(currentIndex + 1);
+            };
+        }
+
+        thumbs.forEach((thumb) => {
+            thumb.onclick = () => {
+                const idx = Number.parseInt(thumb.getAttribute("data-index") || "0", 10);
+                render(idx);
+            };
+        });
+    }
+
+    setupGallery();
+    document.addEventListener("astro:page-load", setupGallery);
+</script>

@@ -1,17 +1,20 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import Gallery from "../components/Gallery.astro";
 ---
 
 <Layout>
-  <section class="placeholder">
-    <h1>Gallery</h1>
-    <p>Photo gallery will be added here.</p>
+  <section class="py-12">
+    <div class="mb-8 text-center">
+      <h1 class="text-3xl font-light tracking-widest text-[#F5F5F5] uppercase">
+        Photo Gallery
+      </h1>
+      <p class="mt-2 text-sm text-[#607D8B]">
+        Moments captured during our expeditions
+      </p>
+    </div>
+
+    <!-- Gallery Component -->
+    <Gallery />
   </section>
 </Layout>
-
-<style>
-  .placeholder {
-    padding: 80px 24px;
-    color: #f5f5f5;
-  }
-</style>
