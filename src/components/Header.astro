@@ -2,8 +2,8 @@
 import NavBar from "./NavBar.astro";
 ---
 
-<header class="w-full font-sans">
-    <div class="mx-auto max-w-7xl px-6 py-8">
+<header class="sticky top-0 z-40 w-full border-b border-white/5 bg-[#101418]/90 font-sans backdrop-blur-sm">
+    <div class="mx-auto max-w-7xl px-6 py-3 md:py-4">
         <nav class="flex w-full items-center justify-between">
             <!-- Brand Logo -->
             <a
@@ -27,7 +27,7 @@ import NavBar from "./NavBar.astro";
                     aria-expanded="false"
                     class="inline-flex items-center justify-center rounded-lg p-2 text-secondary transition-colors duration-300 hover:bg-surface hover:text-primary md:hidden"
             >
-                <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" viewBox="0 0 448 512" class="fill-current">
+                <svg xmlns="http://www.w3.org/2000/svg" height="22" width="22" viewBox="0 0 448 512" class="fill-current">
                     <path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z" />
                 </svg>
             </button>

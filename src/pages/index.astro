@@ -1,7 +1,9 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 import DestinationCard from "../components/DestinationCard.astro";
+import Hero from "../components/Hero.astro";
 import Layout from "../layouts/Layout.astro";
+import heroBackground from "../assets/galleryImages/IMG_20250101_131337.jpg";
 
 // Fetch featured tours from the 'tours' content collection (Astro 5 syntax)
 const featuredTours = await getCollection(
@@ -21,15 +23,16 @@ const featuredTours = await getCollection(
       </p>
     </div>
 
-    {featuredTours.length > 0 ? (
+    {
+      featuredTours.length > 0 ? (
         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {featuredTours.map((tour) => (
-              <DestinationCard
-                  title={tour.data.title}
-                  subtitle={tour.data.subtitle}
-                  image={tour.data.image}
-                  href={tour.data.href}
-              />
+            <DestinationCard
+              title={tour.data.title}
+              subtitle={tour.data.subtitle}
+              image={tour.data.image}
+              href={tour.data.href}
+            />
           ))}
         </div>
     ) : (
