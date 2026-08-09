@@ -149,6 +149,26 @@ const images: ImageMetadata[] = Object.values(imageFiles).map(
                 render(idx);
             };
         });
+
+        // Keyboard navigation handler bound to window
+        const handleKeyDown = (e: KeyboardEvent) => {
+            // Don't intercept arrows if user is typing in an input/textarea
+            if (["INPUT", "TEXTAREA"].includes((e.target as HTMLElement)?.tagName)) {
+                return;
+            }
+
+            if (e.key === "ArrowLeft") {
+                e.preventDefault();
+                render(currentIndex - 1);
+            } else if (e.key === "ArrowRight") {
+                e.preventDefault();
+                render(currentIndex + 1);
+            }
+        };
+
+        // Remove any previously attached keydown listener to prevent duplicates
+        window.removeEventListener("keydown", handleKeyDown);
+        window.addEventListener("keydown", handleKeyDown);
     }
 
     setupGallery();
