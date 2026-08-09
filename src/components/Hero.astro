@@ -16,8 +16,8 @@ const { image, title, subtitle, buttonText, ctaHref } = Astro.props;
   .hero {
     position: relative;
     width: 100%;
-    min-height: clamp(26rem, 62vh, 46rem);
-    padding: clamp(1.5rem, 4vw, 3.5rem) 0;
+    min-height: clamp(16rem, 22vh, 20rem);
+    padding: clamp(0.35rem, 1vw, 1rem) 0;
     background-size: cover;
     background-position: center;
     display: flex;
@@ -33,21 +33,23 @@ const { image, title, subtitle, buttonText, ctaHref } = Astro.props;
 
   .content {
     position: relative;
-    text-align: center;
+    text-align: left;
     color: #F5F5F5;
-    width: min(100%, 700px);
-    padding: clamp(0.5rem, 2vw, 1.5rem) 24px 0;
+    width: min(100%, 680px);
+    padding: clamp(0.9rem, 1.5vw, 1.4rem) 24px 0;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   h1 {
-    font-size: clamp(2rem, 5vw, 3rem);
+    font-size: clamp(1.45rem, 2.4vw, 1.95rem);
     line-height: 1.05;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
   }
 
   p {
-    font-size: clamp(1rem, 2vw, 1.3rem);
-    margin-bottom: 24px;
+    font-size: clamp(0.85rem, 1.05vw, 0.95rem);
+    margin-bottom: 12px;
     color: #E0E0E0;
   }
 
@@ -55,27 +57,60 @@ const { image, title, subtitle, buttonText, ctaHref } = Astro.props;
     display: inline-block;
     background: #E0E0E0;
     color: #101418;
-    padding: 12px 24px;
+    padding: 9px 18px;
     border-radius: 6px;
     text-decoration: none;
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 600;
     transition: background 0.2s ease;
   }
 
-  @media (max-width: 640px) {
+  @media (min-width: 641px) {
     .hero {
-      min-height: 24rem;
-      padding: 1rem 0 1.5rem;
-      background-position: center top;
+      min-height: clamp(15rem, 18vh, 18rem);
+      padding: 0.25rem 0 0.5rem;
+      align-items: center;
     }
 
     .content {
-      padding-inline: 16px;
+      padding-top: 0.5rem;
+    }
+
+    h1 {
+      font-size: clamp(1.35rem, 2vw, 1.7rem);
+      margin-bottom: 8px;
     }
 
     p {
-      margin-bottom: 18px;
+      margin-bottom: 10px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .hero {
+      min-height: 21rem;
+      padding: 0.75rem 0 1rem;
+      background-position: center top;
+      align-items: center;
+    }
+
+    .content {
+      text-align: center;
+      padding-inline: 16px;
+      padding-top: 0;
+    }
+
+    h1 {
+      font-size: clamp(1.6rem, 8vw, 2rem);
+      margin-bottom: 8px;
+    }
+
+    p {
+      margin-bottom: 14px;
+    }
+
+    p {
+      font-size: 0.95rem;
     }
   }
 
