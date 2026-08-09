@@ -15,11 +15,13 @@ const { image, title, subtitle, buttonText, ctaHref } = Astro.props;
 <style>
   .hero {
     position: relative;
-    height: 80vh;
+    width: 100%;
+    min-height: clamp(26rem, 62vh, 46rem);
+    padding: clamp(1.5rem, 4vw, 3.5rem) 0;
     background-size: cover;
     background-position: center;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
   }
 
@@ -33,18 +35,19 @@ const { image, title, subtitle, buttonText, ctaHref } = Astro.props;
     position: relative;
     text-align: center;
     color: #F5F5F5;
-    max-width: 700px;
-    padding: 0 24px;
+    width: min(100%, 700px);
+    padding: clamp(0.5rem, 2vw, 1.5rem) 24px 0;
   }
 
   h1 {
-    font-size: 3rem;
-    margin-bottom: 16px;
+    font-size: clamp(2rem, 5vw, 3rem);
+    line-height: 1.05;
+    margin-bottom: 12px;
   }
 
   p {
-    font-size: 1.3rem;
-    margin-bottom: 32px;
+    font-size: clamp(1rem, 2vw, 1.3rem);
+    margin-bottom: 24px;
     color: #E0E0E0;
   }
 
@@ -52,12 +55,28 @@ const { image, title, subtitle, buttonText, ctaHref } = Astro.props;
     display: inline-block;
     background: #E0E0E0;
     color: #101418;
-    padding: 12px 28px;
+    padding: 12px 24px;
     border-radius: 6px;
     text-decoration: none;
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: 600;
     transition: background 0.2s ease;
+  }
+
+  @media (max-width: 640px) {
+    .hero {
+      min-height: 24rem;
+      padding: 1rem 0 1.5rem;
+      background-position: center top;
+    }
+
+    .content {
+      padding-inline: 16px;
+    }
+
+    p {
+      margin-bottom: 18px;
+    }
   }
 
   .cta:hover {
