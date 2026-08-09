@@ -6,34 +6,19 @@ import Layout from "../layouts/Layout.astro";
 import heroBackground from "../assets/galleryImages/IMG_20250101_131337.jpg";
 
 // Fetch featured tours from the 'tours' content collection (Astro 5 syntax)
-const featuredTours: CollectionEntry<"tours">[] = await getCollection(
-  "tours",
-  (tour: CollectionEntry<"tours">) => tour.data.featured,
+const featuredTours = await getCollection(
+	"tours",
+	(tour) => tour.data.featured,
 );
-
-const heroImage = heroBackground.src;
-const heroTitle = "Capture the World's Hidden Beauty.";
-const heroSubtitle =
-  "Join our free exclusive photography tours around beautiful Ireland.";
-const heroButtonText = "Explore Upcoming Tours";
-const heroButtonHref = "/tours";
 ---
 
 <Layout>
-  <Hero
-    image={heroImage}
-    title={heroTitle}
-    subtitle={heroSubtitle}
-    buttonText={heroButtonText}
-    ctaHref={heroButtonHref}
-  />
-
-  <section class="pt-2 pb-12 md:pt-3">
-    <div class="mb-4 text-center md:mb-6">
-      <h2 class="text-3xl font-light tracking-widest text-[#F5F5F5] uppercase">
+  <section class="py-12">
+    <div class="mb-10 text-center">
+      <h2 class="text-3xl font-light tracking-widest text-primary uppercase">
         Featured Destinations
       </h2>
-      <p class="mt-2 text-sm text-[#607D8B]">
+      <p class="mt-2 text-sm text-secondary">
         Explore our upcoming photography expeditions
       </p>
     </div>
@@ -50,9 +35,8 @@ const heroButtonHref = "/tours";
             />
           ))}
         </div>
-      ) : (
-        <p class="text-center text-[#607D8B]">No featured tours found.</p>
-      )
-    }
+    ) : (
+        <p class="text-center text-secondary">No featured tours found.</p>
+    )}
   </section>
 </Layout>
