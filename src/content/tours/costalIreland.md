@@ -1,7 +1,7 @@
 ---
 title: "COSTAL IRELAND"
 subtitle: "Coastal Sites & Fishing Villages"
-image: /assets/tours/costalIreland.jpg
+image: "../../assets/galleryImages/IMG_20240215_175938.jpg"
 href: "/tours/lofoten"
 featured: true
 ---
