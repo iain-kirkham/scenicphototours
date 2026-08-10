@@ -14,8 +14,8 @@ const currentPath = Astro.url.pathname;
                         href={link.href}
                         class={`pb-1 text-xs uppercase font-medium transition-colors duration-200 border-b-2 ${
                             isActive
-                                ? "text-[#F5F5F5] border-[#607D8B]"
-                                : "text-[#607D8B] border-transparent hover:text-[#F5F5F5] hover:border-[#607D8B]/50"
+                                ? "text-primary border-secondary"
+                                : "text-secondary border-transparent hover:text-primary hover:border-secondary/50"
                         }`}
                 >
                     {link.text}
