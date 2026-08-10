@@ -8,16 +8,11 @@ export async function getStaticPaths() {
 
   return tours.map((tour) => ({
     params: { slug: tour.id },
+    props: { tour },
   }));
 }
 
-const { slug } = Astro.params;
-
-const tour = (await getCollection("tours")).find((t) => t.id === slug);
-
-if (!tour) {
-  throw new Error(`Tour not found: ${slug}`);
-}
+const { tour } = Astro.props;
 
 const {
   title,
