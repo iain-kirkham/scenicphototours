@@ -2,13 +2,13 @@
 import NavBar from "./NavBar.astro";
 ---
 
-<header class="w-full font-sans">
-    <div class="mx-auto max-w-7xl px-6 py-8">
+<header class="sticky top-0 z-40 w-full border-b border-white/5 bg-[#101418]/90 font-sans backdrop-blur-sm">
+    <div class="mx-auto max-w-7xl px-6 py-3 md:py-4">
         <nav class="flex w-full items-center justify-between">
             <!-- Brand Logo -->
             <a
                     href="/"
-                    class="text-xl font-normal text-[#F5F5F5] transition-opacity duration-300 hover:opacity-80 shrink-0"
+                    class="text-xl font-normal text-primary transition-opacity duration-300 hover:opacity-80 shrink-0"
             >
                 Scenic Photo Tours
             </a>
@@ -25,9 +25,9 @@ import NavBar from "./NavBar.astro";
                     aria-label="Open Menu"
                     aria-controls="mobile-menu"
                     aria-expanded="false"
-                    class="inline-flex items-center justify-center rounded-lg p-2 text-[#607D8B] transition-colors duration-300 hover:bg-[#161c22] hover:text-[#F5F5F5] md:hidden"
+                    class="inline-flex items-center justify-center rounded-lg p-2 text-secondary transition-colors duration-300 hover:bg-surface hover:text-primary md:hidden"
             >
-                <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" viewBox="0 0 448 512" class="fill-current">
+                <svg xmlns="http://www.w3.org/2000/svg" height="22" width="22" viewBox="0 0 448 512" class="fill-current">
                     <path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z" />
                 </svg>
             </button>
@@ -37,13 +37,13 @@ import NavBar from "./NavBar.astro";
     <!-- Full-Screen Mobile Menu -->
     <div
             id="mobile-menu"
-            class="fixed inset-0 z-50 hidden flex-col items-center justify-center space-y-12 bg-[#101418] text-[#F5F5F5] md:hidden"
+            class="fixed inset-0 z-50 hidden flex-col items-center justify-center space-y-12 bg-background text-primary md:hidden"
     >
         <button
                 id="menu-close"
                 type="button"
                 aria-label="Close Menu"
-                class="absolute top-6 right-6 p-2 text-[#607D8B] transition-colors duration-300 hover:text-[#F5F5F5]"
+                class="absolute top-6 right-6 p-2 text-secondary transition-colors duration-300 hover:text-primary"
         >
             <svg xmlns="http://www.w3.org/2000/svg" height="24" width="24" viewBox="0 0 384 512" class="fill-current">
                 <path d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"/>

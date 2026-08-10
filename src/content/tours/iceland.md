@@ -1,7 +1,7 @@
 ---
 title: "ICELAND"
 subtitle: "Winter Landscapes & Northern Lights"
-image: "/images/iceland.jpg"
+image: "../../assets/galleryImages/IMG_20240215_175938.jpg"
 href: "/tours/iceland"
 featured: true
 ---

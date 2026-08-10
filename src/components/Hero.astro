@@ -1,5 +1,5 @@
 ---
-const { image, title, subtitle, buttonText } = Astro.props;
+const { image, title, subtitle, buttonText, ctaHref } = Astro.props;
 ---
 
 <section class="hero" style={`background-image: url(${image})`}>
@@ -8,18 +8,20 @@ const { image, title, subtitle, buttonText } = Astro.props;
   <div class="content">
     <h1>{title}</h1>
     <p>{subtitle}</p>
-    <a href="/tours" class="cta">{buttonText}</a>
+    <a href={ctaHref} class="cta">{buttonText}</a>
   </div>
 </section>
 
 <style>
   .hero {
     position: relative;
-    height: 80vh;
+    width: 100%;
+    min-height: clamp(16rem, 22vh, 20rem);
+    padding: clamp(0.35rem, 1vw, 1rem) 0;
     background-size: cover;
     background-position: center;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
   }
 
@@ -31,20 +33,23 @@ const { image, title, subtitle, buttonText } = Astro.props;
 
   .content {
     position: relative;
-    text-align: center;
+    text-align: left;
     color: #F5F5F5;
-    max-width: 700px;
-    padding: 0 24px;
+    width: min(100%, 680px);
+    padding: clamp(0.9rem, 1.5vw, 1.4rem) 24px 0;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   h1 {
-    font-size: 3rem;
-    margin-bottom: 16px;
+    font-size: clamp(1.45rem, 2.4vw, 1.95rem);
+    line-height: 1.05;
+    margin-bottom: 10px;
   }
 
   p {
-    font-size: 1.3rem;
-    margin-bottom: 32px;
+    font-size: clamp(0.85rem, 1.05vw, 0.95rem);
+    margin-bottom: 12px;
     color: #E0E0E0;
   }
 
@@ -52,12 +57,61 @@ const { image, title, subtitle, buttonText } = Astro.props;
     display: inline-block;
     background: #E0E0E0;
     color: #101418;
-    padding: 12px 28px;
+    padding: 9px 18px;
     border-radius: 6px;
     text-decoration: none;
-    font-size: 1.1rem;
+    font-size: 0.9rem;
     font-weight: 600;
     transition: background 0.2s ease;
+  }
+
+  @media (min-width: 641px) {
+    .hero {
+      min-height: clamp(15rem, 18vh, 18rem);
+      padding: 0.25rem 0 0.5rem;
+      align-items: center;
+    }
+
+    .content {
+      padding-top: 0.5rem;
+    }
+
+    h1 {
+      font-size: clamp(1.35rem, 2vw, 1.7rem);
+      margin-bottom: 8px;
+    }
+
+    p {
+      margin-bottom: 10px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .hero {
+      min-height: 21rem;
+      padding: 0.75rem 0 1rem;
+      background-position: center top;
+      align-items: center;
+    }
+
+    .content {
+      text-align: center;
+      padding-inline: 16px;
+      padding-top: 0;
+    }
+
+    h1 {
+      font-size: clamp(1.6rem, 8vw, 2rem);
+      margin-bottom: 8px;
+    }
+
+    p {
+      margin-bottom: 14px;
+    }
+
+    p {
+      font-size: 0.95rem;
+    }
   }
 
   .cta:hover {

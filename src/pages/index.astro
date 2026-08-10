@@ -1,36 +1,42 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 import DestinationCard from "../components/DestinationCard.astro";
+import Hero from "../components/Hero.astro";
 import Layout from "../layouts/Layout.astro";
+import heroBackground from "../assets/galleryImages/IMG_20250101_131337.jpg";
 
 // Fetch featured tours from the 'tours' content collection (Astro 5 syntax)
-const featuredTours = await getCollection("tours", (tour) => tour.data.featured);
+const featuredTours = await getCollection(
+	"tours",
+	(tour) => tour.data.featured,
+);
 ---
 
 <Layout>
   <section class="py-12">
     <div class="mb-10 text-center">
-      <h2 class="text-3xl font-light tracking-widest text-[#F5F5F5] uppercase">
+      <h2 class="text-3xl font-light tracking-widest text-primary uppercase">
         Featured Destinations
       </h2>
-      <p class="mt-2 text-sm text-[#607D8B]">
+      <p class="mt-2 text-sm text-secondary">
         Explore our upcoming photography expeditions
       </p>
     </div>
 
-    {featuredTours.length > 0 ? (
+    {
+      featuredTours.length > 0 ? (
         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {featuredTours.map((tour) => (
-              <DestinationCard
-                  title={tour.data.title}
-                  subtitle={tour.data.subtitle}
-                  image={tour.data.image}
-                  href={tour.data.href}
-              />
+            <DestinationCard
+              title={tour.data.title}
+              subtitle={tour.data.subtitle}
+              image={tour.data.image}
+              href={tour.data.href}
+            />
           ))}
         </div>
     ) : (
-        <p class="text-center text-[#607D8B]">No featured tours found.</p>
+        <p class="text-center text-secondary">No featured tours found.</p>
     )}
   </section>
 </Layout>

@@ -1,17 +1,10 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import ContactForm from "../components/ContactForm.astro";
 ---
 
-<Layout>
-  <section class="placeholder">
-    <h1>Contact</h1>
-    <p>Contact form and details will be added here.</p>
+<Layout title="Contact Us">
+  <section class="w-full bg-background text-primary flex justify-center pt-4 md:pt-12 px-6">
+    <ContactForm />
   </section>
 </Layout>
-
-<style>
-  .placeholder {
-    padding: 80px 24px;
-    color: #f5f5f5;
-  }
-</style>
