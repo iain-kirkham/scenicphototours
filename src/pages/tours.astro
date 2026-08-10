@@ -1,17 +1,37 @@
 ---
+import { getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
+import DestinationCard from "../components/DestinationCard.astro";
+
+const tourEntries = await getCollection("tours");
 ---
 
-<Layout>
-  <section class="placeholder">
-    <h1>Tours</h1>
-    <p>Tour details and sign‑up form will be added here.</p>
+<Layout title="Photography Tours | Scenic Photo Tours">
+  <section class="w-full bg-background text-primary py-12 px-6">
+    <div class="max-w-6xl mx-auto">
+
+      <!-- Page Header -->
+      <div class="mb-10 text-center">
+        <h1 class="text-3xl font-light tracking-widest uppercase md:text-4xl text-primary">
+          Expeditions & Tours
+        </h1>
+        <p class="mt-3 text-sm text-secondary max-w-xl mx-auto">
+          Guided landscape photography workshops designed for all skill levels. Join us on our next journey.
+        </p>
+      </div>
+
+      <!-- Tours Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {tourEntries.map((tour) => (
+            <DestinationCard
+                title={tour.data.title}
+                subtitle={tour.data.subtitle}
+                image={tour.data.image}
+                href={tour.data.href}
+            />
+        ))}
+      </div>
+
+    </div>
   </section>
 </Layout>
-
-<style>
-  .placeholder {
-    padding: 80px 24px;
-    color: #f5f5f5;
-  }
-</style>
