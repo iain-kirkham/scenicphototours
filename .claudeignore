@@ -1,0 +1,9 @@
+# Ignore static image assets
+src/assets/galleryImages/
+src/assets/siteImages/
+public/
+
+# Standard build outputs & dependencies
+node_modules/
+.astro/
+dist/

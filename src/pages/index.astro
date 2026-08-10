@@ -7,8 +7,8 @@ import heroBackground from "../assets/galleryImages/IMG_20250101_131337.jpg";
 
 // Fetch featured tours from the 'tours' content collection (Astro 5 syntax)
 const featuredTours = await getCollection(
-	"tours",
-	(tour) => tour.data.featured,
+  "tours",
+  (tour) => tour.data.featured,
 );
 ---
 
@@ -31,12 +31,13 @@ const featuredTours = await getCollection(
               title={tour.data.title}
               subtitle={tour.data.subtitle}
               image={tour.data.image}
-              href={tour.data.href}
+              href={`/tours/${tour.id}`}
             />
           ))}
         </div>
-    ) : (
+      ) : (
         <p class="text-center text-secondary">No featured tours found.</p>
-    )}
+      )
+    }
   </section>
 </Layout>

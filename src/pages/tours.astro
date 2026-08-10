@@ -9,29 +9,32 @@ const tourEntries = await getCollection("tours");
 <Layout title="Photography Tours | Scenic Photo Tours">
   <section class="w-full bg-background text-primary py-12 px-6">
     <div class="max-w-6xl mx-auto">
-
       <!-- Page Header -->
       <div class="mb-10 text-center">
-        <h1 class="text-3xl font-light tracking-widest uppercase md:text-4xl text-primary">
+        <h1
+          class="text-3xl font-light tracking-widest uppercase md:text-4xl text-primary"
+        >
           Expeditions & Tours
         </h1>
         <p class="mt-3 text-sm text-secondary max-w-xl mx-auto">
-          Guided landscape photography workshops designed for all skill levels. Join us on our next journey.
+          Guided landscape photography workshops designed for all skill levels.
+          Join us on our next journey.
         </p>
       </div>
 
       <!-- Tours Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {tourEntries.map((tour) => (
+        {
+          tourEntries.map((tour) => (
             <DestinationCard
-                title={tour.data.title}
-                subtitle={tour.data.subtitle}
-                image={tour.data.image}
-                href={tour.data.href}
+              title={tour.data.title}
+              subtitle={tour.data.subtitle}
+              image={tour.data.image}
+              href={`/tours/${tour.id}`}
             />
-        ))}
+          ))
+        }
       </div>
-
     </div>
   </section>
 </Layout>
