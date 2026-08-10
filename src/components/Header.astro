@@ -1,5 +1,7 @@
 ---
+import { Image } from "astro:assets";
 import NavBar from "./NavBar.astro";
+import logo from "../assets/siteImages/ScenicPhotoToursLogo.png";
 ---
 
 <header class="sticky top-0 z-40 w-full border-b border-white/5 bg-[#101418]/90 font-sans backdrop-blur-sm">
@@ -8,8 +10,9 @@ import NavBar from "./NavBar.astro";
             <!-- Brand Logo -->
             <a
                     href="/"
-                    class="text-xl font-normal text-primary transition-opacity duration-300 hover:opacity-80 shrink-0"
+                    class="flex shrink-0 items-center gap-2 text-xl font-normal text-primary transition-opacity duration-300 hover:opacity-80"
             >
+                <Image src={logo} alt="Scenic Photo Tours" width={36} height={36} class="h-9 w-9 object-contain" />
                 Scenic Photo Tours
             </a>
 
