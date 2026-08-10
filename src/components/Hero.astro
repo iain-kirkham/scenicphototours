@@ -2,119 +2,22 @@
 const { image, title, subtitle, buttonText, ctaHref } = Astro.props;
 ---
 
-<section class="hero" style={`background-image: url(${image})`}>
-  <div class="overlay"></div>
-
-  <div class="content">
-    <h1>{title}</h1>
-    <p>{subtitle}</p>
-    <a href={ctaHref} class="cta">{buttonText}</a>
+<section
+  class="relative w-full min-h-84 bg-cover bg-top bg-no-repeat flex items-center justify-center px-4 py-10 sm:min-h-72 sm:py-12 sm:items-center sm:px-6 sm:bg-center md:min-h-96 md:py-16 before:absolute before:inset-0 before:bg-black/55"
+  style={`background-image: url(${image})`}
+>
+  <div class="relative z-10 w-full max-w-2xl text-center sm:text-left text-slate-100">
+    <h1 class="text-2xl sm:text-xl md:text-3xl leading-tight mb-3 sm:mb-2 font-normal">
+      {title}
+    </h1>
+    <p class="text-sm sm:text-xs md:text-sm mb-3 sm:mb-2 text-slate-300">
+      {subtitle}
+    </p>
+    <a
+      href={ctaHref}
+      class="inline-block bg-slate-200 text-slate-900 px-4 py-2 rounded transition-colors duration-200 hover:bg-slate-300 font-semibold text-sm"
+    >
+      {buttonText}
+    </a>
   </div>
 </section>
-
-<style>
-  .hero {
-    position: relative;
-    width: 100%;
-    min-height: clamp(16rem, 22vh, 20rem);
-    padding: clamp(0.35rem, 1vw, 1rem) 0;
-    background-size: cover;
-    background-position: center;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-  }
-
-  .overlay {
-    position: absolute;
-    inset: 0;
-    background: rgba(16, 20, 24, 0.55);
-  }
-
-  .content {
-    position: relative;
-    text-align: left;
-    color: #F5F5F5;
-    width: min(100%, 680px);
-    padding: clamp(0.9rem, 1.5vw, 1.4rem) 24px 0;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  h1 {
-    font-size: clamp(1.45rem, 2.4vw, 1.95rem);
-    line-height: 1.05;
-    margin-bottom: 10px;
-  }
-
-  p {
-    font-size: clamp(0.85rem, 1.05vw, 0.95rem);
-    margin-bottom: 12px;
-    color: #E0E0E0;
-  }
-
-  .cta {
-    display: inline-block;
-    background: #E0E0E0;
-    color: #101418;
-    padding: 9px 18px;
-    border-radius: 6px;
-    text-decoration: none;
-    font-size: 0.9rem;
-    font-weight: 600;
-    transition: background 0.2s ease;
-  }
-
-  @media (min-width: 641px) {
-    .hero {
-      min-height: clamp(15rem, 18vh, 18rem);
-      padding: 0.25rem 0 0.5rem;
-      align-items: center;
-    }
-
-    .content {
-      padding-top: 0.5rem;
-    }
-
-    h1 {
-      font-size: clamp(1.35rem, 2vw, 1.7rem);
-      margin-bottom: 8px;
-    }
-
-    p {
-      margin-bottom: 10px;
-    }
-  }
-
-  @media (max-width: 640px) {
-    .hero {
-      min-height: 21rem;
-      padding: 0.75rem 0 1rem;
-      background-position: center top;
-      align-items: center;
-    }
-
-    .content {
-      text-align: center;
-      padding-inline: 16px;
-      padding-top: 0;
-    }
-
-    h1 {
-      font-size: clamp(1.6rem, 8vw, 2rem);
-      margin-bottom: 8px;
-    }
-
-    p {
-      margin-bottom: 14px;
-    }
-
-    p {
-      font-size: 0.95rem;
-    }
-  }
-
-  .cta:hover {
-    background: #cfcfcf;
-  }
-</style>
