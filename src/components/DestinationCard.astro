@@ -1,19 +1,22 @@
 ---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+
 interface Props {
-  title: string;
-  subtitle: string;
-  image: string;
-  href: string;
+	title: string;
+	subtitle: string;
+	image: ImageMetadata;
+	href: string;
 }
 
 const { title, subtitle, image, href } = Astro.props;
 ---
 
-<div class="group relative flex flex-col justify-between overflow-hidden bg-[#161c22] transition-colors duration-300 hover:bg-[#1f2730]">
+<div class="group relative flex flex-col justify-between overflow-hidden bg-surface transition-colors duration-300 hover:bg-surface-hover">
   <div>
     <!-- Card Image -->
     <div class="h-44 w-full overflow-hidden">
-      <img
+      <Image
           src={image}
           alt={title}
           class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
@@ -22,10 +25,10 @@ const { title, subtitle, image, href } = Astro.props;
 
     <!-- Card Content -->
     <div class="p-6">
-      <h3 class="text-lg font-semibold tracking-wider text-[#F5F5F5] uppercase">
+      <h3 class="text-lg font-semibold tracking-wider text-primary uppercase">
         {title}
       </h3>
-      <p class="mt-2 text-xs leading-relaxed text-[#607D8B]">
+      <p class="mt-2 text-xs leading-relaxed text-secondary">
         {subtitle}
       </p>
     </div>
@@ -35,7 +38,7 @@ const { title, subtitle, image, href } = Astro.props;
   <div class="p-6 pt-0">
     <a
         href={href}
-        class="inline-flex items-center text-xs font-medium tracking-widest text-[#607D8B] uppercase transition-colors group-hover:text-[#F5F5F5] after:absolute after:inset-0"
+        class="inline-flex items-center text-xs font-medium tracking-widest text-secondary uppercase transition-colors group-hover:text-primary after:absolute after:inset-0"
     >
       LEARN MORE <span class="ml-1 transition-transform duration-300 group-hover:translate-x-1">→</span>
     </a>
