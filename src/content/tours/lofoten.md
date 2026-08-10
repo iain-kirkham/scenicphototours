@@ -1,7 +1,7 @@
 ---
 title: "LOFOTEN ISLANDS"
 subtitle: "Coastal Fjords & Fishing Villages"
-image: "/images/lofoten.jpg"
+image: /assets/tours/costalIreland.jpg
 href: "/tours/lofoten"
 featured: true
 ---

@@ -1,17 +1,198 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+
+const tours = await getCollection("tours");
+const selectedTourTitle = Astro.url.searchParams.get("tour") ?? "";
 ---
 
 <Layout>
-  <section class="placeholder">
-    <h1>Contact</h1>
-    <p>Contact form and details will be added here.</p>
+  <section class="contact-hero">
+    <p class="eyebrow">Contact</p>
+    <h1>Register your interest</h1>
+    <p class="intro">
+      Use the form below to get in touch about a tour, and we’ll follow up with
+      the next steps.
+    </p>
+    {
+      selectedTourTitle ? (
+        <p class="selection-note">
+          You’re enquiring about <strong>{selectedTourTitle}</strong>.
+        </p>
+      ) : null
+    }
+  </section>
+
+  <section class="contact-panel" aria-labelledby="contact-heading">
+    <form class="contact-form">
+      <div class="field-grid">
+        <label>
+          Full Name
+          <input type="text" name="name" placeholder="Your name" />
+        </label>
+        <label>
+          Email Address
+          <input type="email" name="email" placeholder="you@example.com" />
+        </label>
+      </div>
+
+      <label>
+        Select a Tour
+        <select name="tour" id="tour-select">
+          <option value="">Choose a tour</option>
+          {
+            tours.map((tour) => (
+              <option
+                value={tour.data.title}
+                selected={selectedTourTitle === tour.data.title}
+              >
+                {tour.data.title}
+              </option>
+            ))
+          }
+        </select>
+      </label>
+
+      <label>
+        Phone Number
+        <input type="tel" name="phone" placeholder="Optional" />
+      </label>
+
+      <label>
+        Message
+        <textarea
+          name="message"
+          rows="5"
+          placeholder="Tell us what you’re interested in or ask a question."
+        ></textarea>
+      </label>
+
+      <button type="submit">Submit</button>
+    </form>
   </section>
 </Layout>
 
 <style>
-  .placeholder {
-    padding: 80px 24px;
+  .contact-hero,
+  .contact-panel {
+    padding: 0.35rem 0 1.5rem;
+    max-width: 760px;
+    margin-inline: auto;
+  }
+
+  .contact-hero {
+    display: grid;
+    gap: 0.35rem;
+    padding-top: 0.15rem;
+  }
+
+  .eyebrow {
+    margin: 0;
+    color: #607d8b;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.75rem;
+  }
+
+  h1,
+  h2,
+  p {
+    margin: 0;
+  }
+
+  h1 {
+    font-size: clamp(1.55rem, 2.4vw, 2.1rem);
+    line-height: 1.05;
+  }
+
+  .intro,
+  .selection-note,
+  .section-heading p {
+    color: #c7d0d6;
+    line-height: 1.45;
+  }
+
+  .selection-note strong {
     color: #f5f5f5;
   }
+
+  .section-heading {
+    display: grid;
+    gap: 0.25rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .section-heading h2 {
+    font-size: clamp(1.15rem, 2vw, 1.45rem);
+  }
+
+  .contact-form {
+    display: grid;
+    gap: 0.9rem;
+    background: #161c22;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    padding: 1rem;
+  }
+
+  .field-grid {
+    display: grid;
+    gap: 0.85rem;
+  }
+
+  label {
+    display: grid;
+    gap: 0.45rem;
+    color: #f5f5f5;
+    font-size: 0.92rem;
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: #101418;
+    color: #f5f5f5;
+    padding: 0.85rem 0.95rem;
+    font: inherit;
+  }
+
+  textarea {
+    resize: vertical;
+  }
+
+  button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    background: #e0e0e0;
+    color: #101418;
+    border: 0;
+    border-radius: 6px;
+    padding: 0.65rem 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.85rem;
+  }
+
+  @media (min-width: 720px) {
+    .field-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
 </style>
+
+<script>
+  const selectedTourTitle =
+    new URL(window.location.href).searchParams.get("tour") ?? "";
+  const tourSelect = document.getElementById(
+    "tour-select",
+  ) as HTMLSelectElement | null;
+
+  if (tourSelect && selectedTourTitle) {
+    tourSelect.value = selectedTourTitle;
+  }
+</script>

@@ -1,0 +1,43 @@
+---
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+import { Image } from "astro:assets";
+
+export async function getStaticPaths() {
+  const tours = await getCollection("tours");
+
+  return tours.map((tour) => ({
+    params: { slug: tour.id }, // id = filename without extension
+  }));
+}
+
+const { slug } = Astro.params;
+
+// Use id instead of slug (glob loader does not type slug)
+const tour = (await getCollection("tours")).find((t) => t.id === slug);
+
+if (!tour) {
+  throw new Error(`Tour not found: ${slug}`);
+}
+
+const { title, subtitle, image, featured } = tour.data;
+---
+
+<Layout title={title}>
+  <section class="tour-detail">
+    <h1>{title}</h1>
+    <p class="subtitle">{subtitle}</p>
+
+    <!-- Hero Image -->
+    {
+      typeof image === "string" ? (
+        <img src={image} alt={title} class="tour-detail-image" />
+      ) : (
+        <Image src={image as any} alt={title} class="tour-detail-image" />
+      )
+    }
+
+    <!-- Reserve Button -->
+    <a href="/contact" class="cta-button">Reserve Your Spot</a>
+  </section>
+</Layout>
