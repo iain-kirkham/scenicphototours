@@ -12,7 +12,7 @@ import logo from "../assets/siteImages/ScenicPhotoToursLogo.png";
                     href="/"
                     class="flex shrink-0 items-center gap-2 text-xl font-normal text-primary transition-opacity duration-300 hover:opacity-80"
             >
-                <Image src={logo} alt="Scenic Photo Tours" width={36} height={36} class="h-9 w-9 object-contain" />
+                <Image src={logo} alt="Scenic Photo Tours" width={52} height={52} class="h-12 w-12 object-contain" />
                 Scenic Photo Tours
             </a>
 
@@ -41,7 +41,7 @@ import logo from "../assets/siteImages/ScenicPhotoToursLogo.png";
 <!-- Full-Screen Mobile Menu -->
 <div
         id="mobile-menu"
-        class="fixed inset-0 z-50 hidden flex-col items-center justify-center space-y-12 bg-background text-primary md:hidden"
+        class="fixed inset-0 z-50 flex -translate-y-full transform flex-col items-center justify-center space-y-12 bg-background text-primary opacity-0 transition-all duration-300 ease-in-out pointer-events-none md:hidden"
 >
     <button
             id="menu-close"
@@ -55,7 +55,7 @@ import logo from "../assets/siteImages/ScenicPhotoToursLogo.png";
     </button>
 
     <div class="text-center">
-        <NavBar />
+        <NavBar size="lg" />
     </div>
 </div>
 
@@ -68,8 +68,8 @@ import logo from "../assets/siteImages/ScenicPhotoToursLogo.png";
 
         const openMenu = () => {
             if (mobileMenu) {
-                mobileMenu.style.display = "flex";
-                mobileMenu.classList.remove("hidden");
+                mobileMenu.classList.remove("-translate-y-full", "opacity-0", "pointer-events-none");
+                mobileMenu.classList.add("translate-y-0", "opacity-100", "pointer-events-auto");
             }
             menuButton?.setAttribute("aria-expanded", "true");
             document.body.style.overflow = "hidden";
@@ -77,8 +77,8 @@ import logo from "../assets/siteImages/ScenicPhotoToursLogo.png";
 
         const closeMenu = () => {
             if (mobileMenu) {
-                mobileMenu.classList.add("hidden");
-                mobileMenu.style.display = "";
+                mobileMenu.classList.remove("translate-y-0", "opacity-100", "pointer-events-auto");
+                mobileMenu.classList.add("-translate-y-full", "opacity-0", "pointer-events-none");
             }
             menuButton?.setAttribute("aria-expanded", "false");
             document.body.style.overflow = "";
