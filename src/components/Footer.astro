@@ -1,19 +1,85 @@
-<footer class="w-full border-t border-border bg-background py-8 text-xs font-light tracking-wider text-secondary">
-  <div class="mx-auto flex max-w-7xl flex-col items-center gap-3 px-6 text-center sm:flex-row sm:justify-between sm:gap-2 sm:text-left">
-    <!-- Left Details -->
-    <div class="flex items-center gap-2">
-      <span>Contact:</span>
-      <a
+---
+import { Image } from "astro:assets";
+import SocialLinks from "./SocialLinks.astro";
+import { links } from "../data/utils";
+import logo from "../assets/siteImages/ScenicPhotoToursLogo.png";
+
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="relative w-full bg-surface font-sans text-secondary">
+  <!-- Signature: an aurora hairline, quoting the Northern Lights tours this studio actually runs -->
+  <div class="h-px w-full bg-gradient-to-r from-transparent via-aurora/70 to-transparent"></div>
+
+  <div class="mx-auto max-w-7xl px-6 py-14">
+    <div class="flex flex-col gap-12 text-center sm:flex-row sm:justify-between sm:text-left">
+      <!-- Brand -->
+      <div class="mx-auto max-w-xs sm:mx-0">
+        <div class="flex items-center justify-center gap-2 sm:justify-start">
+          <Image src={logo} alt="" width={28} height={28} class="h-7 w-7 object-contain" />
+          <p class="text-lg font-normal text-primary">Scenic Photo Tours</p>
+        </div>
+        <p class="mt-3 text-sm leading-relaxed">
+          Small-group photography expeditions to the world's most scenic, and least crowded, landscapes.
+        </p>
+        <div class="mt-5 flex justify-center sm:justify-start">
+          <SocialLinks />
+        </div>
+      </div>
+
+      <!-- Quick Links -->
+      <div>
+        <p class="text-xs font-medium uppercase tracking-widest text-primary">Explore</p>
+        <ul class="mt-4 space-y-2 text-sm">
+          {
+            links.map((link) => (
+              <li>
+                <a href={link.href} class="transition-colors duration-200 hover:text-primary">
+                  {link.text}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <!-- Contact -->
+      <div>
+        <p class="text-xs font-medium uppercase tracking-widest text-primary">Contact</p>
+        <a
           href="mailto:scenicphototours@gmail.com"
-          class="text-primary transition-colors duration-200 hover:text-accent hover:underline"
-      >
-        scenicphototours@gmail.com
-      </a>
+          class="mt-4 inline-block text-sm transition-colors duration-200 hover:text-primary"
+        >
+          scenicphototours@gmail.com
+        </a>
+      </div>
     </div>
 
-    <!-- Right Copyright -->
-    <div>
-      <p>© Copyright Scenic Photo Tours</p>
+    <!-- Bottom Bar -->
+    <div
+      class="mt-12 flex flex-col items-center gap-3 border-t border-border/60 pt-6 text-xs tracking-wide text-secondary/80 sm:flex-row sm:justify-between"
+    >
+      <p>© {currentYear} Scenic Photo Tours. All rights reserved.</p>
+      <p>
+        Designed by{" "}
+        <a
+          href="https://github.com/iain-kirkham"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-secondary/80 transition-colors duration-200 hover:text-primary"
+        >
+          Iain Kirkham
+        </a>{" "}
+        &amp;{" "}
+        <a
+          href="https://github.com/mrosevere"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-secondary/80 transition-colors duration-200 hover:text-primary"
+        >
+          Mark Rosevere
+        </a>
+      </p>
     </div>
   </div>
 </footer>
