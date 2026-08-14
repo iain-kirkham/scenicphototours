@@ -7,6 +7,14 @@ export const links: { href: string; text: string }[] = [
 ];
 
 export const socials: { name: string; href: string; color: string }[] = [
-	{ name: "Instagram", href: "https://www.instagram.com/scenicphototours", color: "#E1306C" },
-	{ name: "LinkedIn", href: "https://www.linkedin.com/in/sarahphilp/", color: "#0A66C2" },
+	{
+		name: "Instagram",
+		href: "https://www.instagram.com/scenicphototours",
+		color: "#E1306C",
+	},
+	{
+		name: "LinkedIn",
+		href: "https://www.linkedin.com/in/sarahphilp/",
+		color: "#0A66C2",
+	},
 ];
