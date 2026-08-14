@@ -1,3 +1,11 @@
+---
+export interface Props {
+	tours?: string[];
+}
+
+const { tours = [] } = Astro.props;
+---
+
 <div class="w-full max-w-[480px] bg-surface border border-secondary/25 rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.4)] p-8">
     <h1 class="text-2xl font-light tracking-wider text-primary uppercase mb-2">
         Contact Us
@@ -7,8 +15,43 @@
         Have questions about our expeditions? Send us a message below.
     </p>
 
-    <form action="https://api.staticforms.dev/submit" method="POST" class="space-y-5">
+    <div
+            id="form-success"
+            class="hidden mb-5 rounded-lg border border-accent/40 bg-accent/10 px-4 py-3 text-sm text-primary"
+            role="status"
+    >
+        Thanks for reaching out! We'll be in touch shortly.
+    </div>
+
+    <div
+            id="form-error"
+            class="hidden mb-5 rounded-lg border border-red-500/40 bg-red-500/10 px-4 py-3 text-sm text-red-200"
+            role="alert"
+    >
+        Something went wrong sending your message. Please try again.
+    </div>
+
+    <form
+            id="contact-form"
+            action="https://api.staticforms.dev/submit"
+            method="POST"
+            class="space-y-5"
+            novalidate
+    >
         <input type="hidden" name="apiKey" value="YOUR_API_KEY" />
+        <input type="hidden" name="redirectTo" value="/contact?success=true" />
+
+        <!-- Honeypot field: kept off-screen, must stay empty -->
+        <div class="absolute -left-[9999px] top-auto" aria-hidden="true">
+            <label for="honeypot">Leave this field empty</label>
+            <input
+                    type="text"
+                    id="honeypot"
+                    name="honeypot"
+                    tabindex="-1"
+                    autocomplete="off"
+            />
+        </div>
 
         <div>
             <label for="name" class="block text-sm font-medium text-primary mb-1.5">Name</label>
@@ -17,8 +60,12 @@
                     id="name"
                     name="name"
                     required
+                    minlength="2"
+                    autocomplete="name"
+                    aria-describedby="name-error"
                     class="w-full px-3 py-2.5 bg-background border border-secondary/30 rounded-lg text-sm text-primary placeholder-secondary/50 focus:outline-none focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-colors"
             />
+            <p id="name-error" class="hidden mt-1.5 text-xs text-red-400"></p>
         </div>
 
         <div>
@@ -28,8 +75,23 @@
                     id="email"
                     name="email"
                     required
+                    autocomplete="email"
+                    aria-describedby="email-error"
                     class="w-full px-3 py-2.5 bg-background border border-secondary/30 rounded-lg text-sm text-primary placeholder-secondary/50 focus:outline-none focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-colors"
             />
+            <p id="email-error" class="hidden mt-1.5 text-xs text-red-400"></p>
+        </div>
+
+        <div>
+            <label for="tour" class="block text-sm font-medium text-primary mb-1.5">Tour</label>
+            <select
+                    id="tour"
+                    name="tour"
+                    class="w-full px-3 py-2.5 bg-background border border-secondary/30 rounded-lg text-sm text-primary focus:outline-none focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-colors"
+            >
+                <option value="General Enquiry">General Enquiry</option>
+                {tours.map((title) => <option value={title}>{title}</option>)}
+            </select>
         </div>
 
         <div>
@@ -39,15 +101,150 @@
                     name="message"
                     rows="5"
                     required
+                    minlength="10"
+                    aria-describedby="message-error"
                     class="w-full px-3 py-2.5 bg-background border border-secondary/30 rounded-lg text-sm text-primary placeholder-secondary/50 focus:outline-none focus:border-secondary focus:ring-2 focus:ring-secondary/20 transition-colors resize-y"
             ></textarea>
+            <p id="message-error" class="hidden mt-1.5 text-xs text-red-400"></p>
         </div>
 
         <button
                 type="submit"
-                class="w-full py-3 bg-accent hover:bg-white text-background font-semibold rounded-lg cursor-pointer text-sm transition-colors"
+                id="submit-button"
+                class="w-full py-3 bg-accent hover:bg-white text-background font-semibold rounded-lg cursor-pointer text-sm transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
         >
             Send Message
         </button>
     </form>
 </div>
+
+<script>
+    const form = document.getElementById("contact-form") as HTMLFormElement;
+    const submitButton = document.getElementById("submit-button") as HTMLButtonElement;
+    const successBanner = document.getElementById("form-success") as HTMLDivElement;
+    const errorBanner = document.getElementById("form-error") as HTMLDivElement;
+    const tourSelect = document.getElementById("tour") as HTMLSelectElement;
+
+    // Pre-fill the tour field when arriving from a tour page, e.g. /contact?tour=ICELAND
+    const params = new URLSearchParams(window.location.search);
+    const requestedTour = params.get("tour");
+    if (requestedTour) {
+        const matchingOption = Array.from(tourSelect.options).find(
+            (option) => option.value.toLowerCase() === requestedTour.toLowerCase(),
+        );
+        if (matchingOption) {
+            tourSelect.value = matchingOption.value;
+        }
+    }
+
+    if (params.get("success") === "true") {
+        successBanner.classList.remove("hidden");
+    }
+
+    type FieldRule = {
+        input: HTMLInputElement | HTMLTextAreaElement;
+        errorEl: HTMLElement;
+        validate: (value: string) => string | null;
+    };
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    const fields: FieldRule[] = [
+        {
+            input: document.getElementById("name") as HTMLInputElement,
+            errorEl: document.getElementById("name-error") as HTMLElement,
+            validate: (value) =>
+                value.trim().length < 2 ? "Please enter your name." : null,
+        },
+        {
+            input: document.getElementById("email") as HTMLInputElement,
+            errorEl: document.getElementById("email-error") as HTMLElement,
+            validate: (value) =>
+                !emailPattern.test(value.trim())
+                    ? "Please enter a valid email address."
+                    : null,
+        },
+        {
+            input: document.getElementById("message") as HTMLTextAreaElement,
+            errorEl: document.getElementById("message-error") as HTMLElement,
+            validate: (value) =>
+                value.trim().length < 10
+                    ? "Please tell us a little more (at least 10 characters)."
+                    : null,
+        },
+    ];
+
+    function showFieldError(field: FieldRule, message: string | null) {
+        if (message) {
+            field.errorEl.textContent = message;
+            field.errorEl.classList.remove("hidden");
+            field.input.classList.add("border-red-400");
+            field.input.setAttribute("aria-invalid", "true");
+        } else {
+            field.errorEl.textContent = "";
+            field.errorEl.classList.add("hidden");
+            field.input.classList.remove("border-red-400");
+            field.input.removeAttribute("aria-invalid");
+        }
+    }
+
+    function validateForm(): boolean {
+        let isValid = true;
+        for (const field of fields) {
+            const message = field.validate(field.input.value);
+            showFieldError(field, message);
+            if (message) isValid = false;
+        }
+        return isValid;
+    }
+
+    for (const field of fields) {
+        field.input.addEventListener("blur", () =>
+            showFieldError(field, field.validate(field.input.value)),
+        );
+        field.input.addEventListener("input", () => {
+            if (!field.errorEl.classList.contains("hidden")) {
+                showFieldError(field, field.validate(field.input.value));
+            }
+        });
+    }
+
+    form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        errorBanner.classList.add("hidden");
+        successBanner.classList.add("hidden");
+
+        // Honeypot: if filled in, silently drop the submission.
+        const honeypot = form.querySelector<HTMLInputElement>("#honeypot");
+        if (honeypot && honeypot.value.trim() !== "") {
+            return;
+        }
+
+        if (!validateForm()) {
+            return;
+        }
+
+        submitButton.disabled = true;
+        submitButton.textContent = "Sending...";
+
+        try {
+            const response = await fetch(form.action, {
+                method: "POST",
+                headers: { Accept: "application/json" },
+                body: new FormData(form),
+            });
+
+            if (!response.ok) {
+                throw new Error(`Submission failed with status ${response.status}`);
+            }
+
+            form.reset();
+            successBanner.classList.remove("hidden");
+        } catch (error) {
+            errorBanner.classList.remove("hidden");
+        } finally {
+            submitButton.disabled = false;
+            submitButton.textContent = "Send Message";
+        }
+    });
+</script>

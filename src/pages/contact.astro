@@ -1,10 +1,14 @@
 ---
-import Layout from "../layouts/Layout.astro";
+import { getCollection } from "astro:content";
 import ContactForm from "../components/ContactForm.astro";
+import Layout from "../layouts/Layout.astro";
+
+const tourEntries = await getCollection("tours");
+const tourTitles = tourEntries.map((tour) => tour.data.title);
 ---
 
 <Layout title="Contact Us">
   <section class="w-full bg-background text-primary flex justify-center pt-[2vh] md:pt-[6vh] px-6">
-    <ContactForm />
+    <ContactForm tours={tourTitles} />
   </section>
 </Layout>
