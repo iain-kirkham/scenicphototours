@@ -3,6 +3,9 @@
 /* Twilight Nordic (Cold & Atmospheric) palette, exposed as Tailwind theme tokens
    so utilities like bg-background, text-primary, border-secondary/25 are generated. */
 @theme {
+	/* Extra breakpoint for 4K / ultrawide monitors so containers can use the space */
+	--breakpoint-3xl: 120rem;
+
 	--color-background: #101418; /* Deep Arctic Blue-Black */
 	--color-accent: #e0e0e0; /* Ice White / Light Gray */
 	--color-primary: #f5f5f5; /* Ghost White */
