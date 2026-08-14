@@ -1,20 +1,20 @@
 ---
-import { getCollection, type CollectionEntry } from "astro:content";
 import { getImage } from "astro:assets";
+import { type CollectionEntry, getCollection } from "astro:content";
+import heroBackgroundSrc from "../assets/galleryImages/IMG_20250101_131337.jpg";
 import DestinationCard from "../components/DestinationCard.astro";
 import Hero from "../components/Hero.astro";
 import Layout from "../layouts/Layout.astro";
-import heroBackgroundSrc from "../assets/galleryImages/IMG_20250101_131337.jpg";
 
 // Fetch featured tours from the 'tours' content collection (Astro 5 syntax)
 const featuredTours = await getCollection(
-  "tours",
-  (tour) => tour.data.featured,
+	"tours",
+	(tour) => tour.data.featured,
 );
 
 const heroBackground = await getImage({
-  src: heroBackgroundSrc,
-  format: "webp",
+	src: heroBackgroundSrc,
+	format: "webp",
 });
 ---
 
