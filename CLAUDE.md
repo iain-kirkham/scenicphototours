@@ -20,3 +20,11 @@ Consult these guides before working on related tasks:
 - [Adding or managing content](https://docs.astro.build/en/guides/content-collections/)
 - [Adding styles or using Tailwind](https://docs.astro.build/en/guides/styling/)
 - [Supporting multiple languages](https://docs.astro.build/en/guides/internationalization/)
+
+This project's dev/preview server runs as a self-managed background
+process (see CLAUDE.md: `astro dev --background` / `astro preview`),
+which daemonizes immediately and would make Playwright's built-in
+`webServer` option report the launch process as exiting early.
+Start the server yourself before running tests, e.g.:
+astro dev --background
+npx playwright test
