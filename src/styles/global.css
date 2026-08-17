@@ -16,6 +16,12 @@
 	--color-surface: #161c22;
 	--color-surface-hover: #1f2730;
 	--color-border: #202830;
+
+	/* Defined as a theme token so the `font-sans` utility and the body default
+	   resolve to the same stack. */
+	--font-sans:
+		system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+		Ubuntu, Cantarell, sans-serif;
 }
 
 @layer base {
@@ -23,9 +29,7 @@
 	body {
 		background-color: var(--color-background);
 		color: var(--color-primary);
-		font-family:
-			system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-			Ubuntu, Cantarell, sans-serif;
+		font-family: var(--font-sans);
 		min-height: 100vh;
 		margin: 0;
 		padding: 0;

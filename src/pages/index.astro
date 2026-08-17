@@ -1,7 +1,6 @@
 ---
-import { getImage } from "astro:assets";
 import { type CollectionEntry, getCollection } from "astro:content";
-import heroBackgroundSrc from "../assets/galleryImages/IMG_20250101_131337.jpg";
+import heroBackground from "../assets/galleryImages/IMG_20250101_131337.jpg";
 import DestinationCard from "../components/DestinationCard.astro";
 import Hero from "../components/Hero.astro";
 import Layout from "../layouts/Layout.astro";
@@ -11,16 +10,11 @@ const featuredTours = await getCollection(
 	"tours",
 	(tour) => tour.data.featured,
 );
-
-const heroBackground = await getImage({
-	src: heroBackgroundSrc,
-	format: "webp",
-});
 ---
 
 <Layout>
   <Hero
-    image={heroBackground.src}
+    image={heroBackground}
     title="Capture Nature's Beauty"
     subtitle="Join us on unforgettable photography expeditions to stunning destinations around the world"
     buttonText="Explore Tours"

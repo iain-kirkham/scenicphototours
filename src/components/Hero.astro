@@ -1,11 +1,33 @@
 ---
+import { Image } from "astro:assets";
+
+interface Props {
+	image: ImageMetadata;
+	title: string;
+	subtitle: string;
+	buttonText: string;
+	ctaHref: string;
+}
+
 const { image, title, subtitle, buttonText, ctaHref } = Astro.props;
 ---
 
 <section
-  class="relative w-full min-h-[45vh] bg-cover bg-top bg-no-repeat flex items-center justify-center px-4 py-10 sm:min-h-[40vh] sm:py-12 sm:items-center sm:px-6 sm:bg-center md:min-h-[50vh] md:py-16 before:absolute before:inset-0 before:bg-black/55"
-  style={`background-image: url(${image})`}
+  class="relative w-full min-h-[45vh] overflow-hidden flex items-center justify-center px-4 py-10 sm:min-h-[40vh] sm:py-12 sm:items-center sm:px-6 md:min-h-[50vh] md:py-16 before:absolute before:inset-0 before:z-[1] before:bg-black/55"
 >
+  <!-- Decorative backdrop: the hero's LCP image, so it loads eagerly and at
+       high priority rather than being deferred like below-the-fold assets. -->
+  <Image
+    src={image}
+    alt=""
+    widths={[640, 1024, 1920]}
+    sizes="100vw"
+    format="webp"
+    loading="eager"
+    fetchpriority="high"
+    class="absolute inset-0 z-0 h-full w-full object-cover object-top sm:object-center"
+  />
+
   <div class="relative z-10 w-full max-w-2xl text-center sm:text-left text-slate-100">
     <h1 class="text-2xl sm:text-xl md:text-3xl leading-tight mb-3 sm:mb-2 font-normal">
       {title}
