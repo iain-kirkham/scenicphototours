@@ -72,9 +72,75 @@ Both offer free tiers, automatic HTTPS, and can rebuild the site automatically w
    - **Publish/output directory:** `dist`
 4. Every future push to the repository will automatically rebuild and redeploy the live site.
 
-### Option 2: Any static web host
+### Option 2: Upload to your own web host via SFTP
 
-Run `npm run build` locally (or in CI), then upload the contents of the `dist/` folder to any static host — e.g. an S3 bucket + CloudFront, GitHub Pages, Cloudflare Pages, or a shared hosting provider via FTP/SFTP. No Node.js needs to be installed on the host itself; it's just plain HTML/CSS/JS/images.
+If you already have web hosting (a cPanel/shared host, a VPS, or similar), the site can be published by simply copying files onto the server. Nothing needs to be installed on the host — the site is just HTML, CSS, JavaScript and images.
+
+**What you'll need from your hosting provider (one-time):**
+
+| Detail | Example | Notes |
+| :--- | :--- | :--- |
+| Host / server address | `sftp.yourhost.com` | Sometimes shown as "SFTP host" |
+| Port | `22` | SFTP is normally port 22 |
+| Username | `scenicphoto` | |
+| Password or SSH key | — | A key is more secure if offered |
+| Web root folder | `/public_html` or `/var/www/html` | The folder the site is served from — often `public_html`, `www`, or `htdocs` |
+
+> **SFTP, not FTP.** SFTP is the encrypted version and is what you should use. If your host only offers plain FTP, the steps below are identical, but ask them whether SFTP can be enabled.
+
+**Step 1 — Build the site**
+
+```sh
+npm install      # first time only
+npm run build
+```
+
+This creates a `dist/` folder containing the finished website.
+
+**Step 2 — Check it before uploading**
+
+```sh
+npm run preview
+```
+
+Open the address it prints and click through the site. What you see here is exactly what will go live.
+
+**Step 3 — Connect with an SFTP client**
+
+Use a free tool such as [FileZilla](https://filezilla-project.org), [WinSCP](https://winscp.net) (Windows), or [Cyberduck](https://cyberduck.io) (Mac). Enter the host, port, username and password from the table above, choose **SFTP** as the protocol, and connect.
+
+**Step 4 — Upload the contents of `dist/`**
+
+On the server, open your web root folder (e.g. `public_html`). Then upload **everything inside `dist/`** — not the `dist` folder itself.
+
+```text
+Correct:   public_html/index.html, public_html/_astro/, public_html/tours/ …
+Incorrect: public_html/dist/index.html
+```
+
+Choose **overwrite** when prompted about existing files.
+
+**Step 5 — Check the live site**
+
+Visit your domain in a browser and do a hard refresh (`Ctrl`+`F5`, or `Cmd`+`Shift`+`R` on Mac) so you're not seeing a cached copy. Click through a few pages, including a tour page, to confirm everything loads.
+
+**Repeat deployments**
+
+Every future update is the same three steps: `npm run build`, then upload the contents of `dist/`, then hard-refresh. Old files that are no longer part of the site aren't removed automatically, so occasionally it's worth clearing the web root before uploading a fresh build — take a copy of anything custom (e.g. a `.htaccess` file) first.
+
+**If the site lives in a subfolder**
+
+The steps above assume the site is served from the root of a domain (e.g. `https://example.com`). If it will live in a subfolder instead (e.g. `https://example.com/tours/`), `base: "/tours"` must be added to `astro.config.mjs` and the site rebuilt — otherwise links and images will point to the wrong place. Let your developer know if this applies.
+
+**Uploading from the command line (optional)**
+
+If you'd rather not use a graphical client, and you have SSH access, `rsync` mirrors the build in one command:
+
+```sh
+rsync -avz --delete dist/ username@sftp.yourhost.com:/public_html/
+```
+
+`--delete` removes files on the server that no longer exist in the build, keeping it an exact match. Omit that flag if anything else lives in the web root.
 
 ### Option 3: Docker
 
@@ -86,6 +152,34 @@ docker run -p 4321:4321 photography-tours
 ```
 
 > Note: the Dockerfile expects the project to be configured for server-side rendering. As currently set up, this project builds a **static** site, so Options 1 or 2 above are the simplest paths to production. If server-side rendering is needed in future, an Astro [server adapter](https://docs.astro.build/en/guides/server-side-rendering/) (e.g. Node) will need to be added first.
+
+## Automated Checks & Deployment (GitHub Actions)
+
+If the project is hosted on GitHub, two workflows are included in `.github/workflows/`.
+
+### `ci.yml` — automatic safety net
+
+Runs on every push to `master` and on every pull request. It installs dependencies, runs the code checks (`npm run check`), and builds the site. If anything fails, GitHub marks the change with a red ✗ — that's your signal not to deploy. A green ✓ means the site built successfully, and the finished `dist/` folder is attached to the run for download if you'd rather upload it by hand.
+
+### `deploy.yml` — one-click publish over SFTP
+
+Triggered manually from the **Actions** tab (→ *Deploy* → *Run workflow*). It repeats the same checks and build, and only if those pass does it upload the site to your web host. A broken build never reaches the live site.
+
+Before its first use, add these under **Settings → Secrets and variables → Actions**:
+
+| Secret | Value |
+| :--- | :--- |
+| `SFTP_HOST` | Server address, e.g. `sftp.yourhost.com` |
+| `SFTP_USER` | SFTP username |
+| `SFTP_PORT` | Usually `22` |
+| `SFTP_PATH` | Web root, e.g. `/public_html` |
+| `SSH_KEY` | Private SSH key for that account, including the `BEGIN`/`END` lines |
+| `SSH_KNOWN_HOSTS` | Output of `ssh-keyscan -p 22 sftp.yourhost.com` |
+
+Two things worth knowing:
+
+- The upload uses `rsync --delete`, so the web root is made an exact match of the build. If anything else lives there (a `.htaccess` file, other subfolders), remove `--delete` from `deploy.yml` first.
+- This requires SSH access, which the SSH key is used for. Hosts that offer only password-based FTP won't work with this workflow — use the manual upload steps above instead.
 
 ## Useful Commands
 
@@ -143,7 +237,39 @@ This site is built with [Astro](https://astro.build), a framework for building f
 - **[Astro components](https://docs.astro.build/en/basics/astro-components/)** — the reusable building blocks (nav bar, header, footer, cards, etc.) in `src/components/`.
 - **[Layouts](https://docs.astro.build/en/basics/layouts/)** — the shared page shell in `src/layouts/`, which every page wraps itself in.
 - **[Content collections](https://docs.astro.build/en/guides/content-collections/)** — how the tours (`src/content/tours/`) and testimonials (`src/content/testimonials/`) are structured, validated, and turned into pages. This is the mechanism that lets tours be added or edited as plain Markdown/JSON files without writing code.
-- **[Styling with Tailwind](https://docs.astro.build/en/guides/styling/)** — how the colour palette and other styling above is applied across the site.
+- **[Styling with Tailwind](https://docs.astro.build/en/guides/styling/)** — how the colour palette and other styling above is applied across the site. The framework itself is documented at [tailwindcss.com](https://tailwindcss.com).
+
+### Example: a tour Markdown file (`src/content/tours/iceland.md`)
+
+```md
+---
+title: "ICELAND"
+subtitle: "Winter Landscapes & Northern Lights"
+image: "../../assets/galleryImages/IMG_20240215_175938.jpg"
+featured: true
+date: "15 September 2026"
+time: "09:00"
+duration: "5 days"
+meetingPoint: "Keflavík International Airport, Arrivals Hall"
+whatToBring:
+  - "Warm, waterproof outerwear"
+  - "Sturdy hiking boots"
+  - "Camera + tripod"
+  - "Spare batteries (cold drains them fast)"
+---
+```
+
+The fields between `---` are the tour's data; anything written below the closing `---` becomes the tour description shown on its page.
+
+### Example: a testimonial JSON file (`src/content/testimonials/marcus-vance.json`)
+
+```json
+{
+	"author": "Marcus Vance",
+	"quote": "The arctic lighting during the coastal drive was insane. Easily the best guided shoot I've been on.",
+	"location": "Edinburgh"
+}
+```
 
 ## Learn More
 
