@@ -41,7 +41,7 @@ import NavBar from "./NavBar.astro";
 <!-- Full-Screen Mobile Menu -->
 <div
         id="mobile-menu"
-        class="fixed inset-0 z-50 flex -translate-y-full transform flex-col items-center justify-center space-y-12 bg-background text-primary opacity-0 transition-all duration-300 ease-in-out pointer-events-none md:hidden"
+        class="fixed inset-0 z-50 flex -translate-y-full flex-col items-center justify-center space-y-12 bg-background text-primary opacity-0 transition-all duration-300 ease-in-out pointer-events-none data-[open]:translate-y-0 data-[open]:opacity-100 data-[open]:pointer-events-auto md:hidden"
 >
     <button
             id="menu-close"
@@ -66,23 +66,14 @@ import NavBar from "./NavBar.astro";
         const menuClose = document.getElementById("menu-close");
         const mobileLinks = mobileMenu?.querySelectorAll("a");
 
-        const openMenu = () => {
-            if (mobileMenu) {
-                mobileMenu.classList.remove("-translate-y-full", "opacity-0", "pointer-events-none");
-                mobileMenu.classList.add("translate-y-0", "opacity-100", "pointer-events-auto");
-            }
-            menuButton?.setAttribute("aria-expanded", "true");
-            document.body.style.overflow = "hidden";
+        const setMenuOpen = (open: boolean) => {
+            mobileMenu?.toggleAttribute("data-open", open);
+            menuButton?.setAttribute("aria-expanded", String(open));
+            document.body.style.overflow = open ? "hidden" : "";
         };
 
-        const closeMenu = () => {
-            if (mobileMenu) {
-                mobileMenu.classList.remove("translate-y-0", "opacity-100", "pointer-events-auto");
-                mobileMenu.classList.add("-translate-y-full", "opacity-0", "pointer-events-none");
-            }
-            menuButton?.setAttribute("aria-expanded", "false");
-            document.body.style.overflow = "";
-        };
+        const openMenu = () => setMenuOpen(true);
+        const closeMenu = () => setMenuOpen(false);
 
         if (menuButton && mobileMenu && menuClose) {
             menuButton.addEventListener("click", openMenu);
