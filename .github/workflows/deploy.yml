@@ -1,0 +1,64 @@
+name: Deploy
+
+# Publishes the site to the web host over SFTP/SSH.
+#
+# Runs only when triggered manually, and only after the site builds cleanly —
+# a failing lint or build stops the deployment before anything is uploaded.
+#
+# Required repository secrets (Settings → Secrets and variables → Actions):
+#   SFTP_HOST      e.g. sftp.yourhost.com
+#   SFTP_USER      e.g. scenicphoto
+#   SFTP_PORT      e.g. 22
+#   SFTP_PATH      web root on the server, e.g. /public_html
+#   SSH_KEY        the full private key (including BEGIN/END lines)
+#   SSH_KNOWN_HOSTS  output of: ssh-keyscan -p 22 sftp.yourhost.com
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Build & upload
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22.12.0"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check formatting and lint rules
+        run: npm run check
+
+      - name: Build site
+        run: npm run build
+
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          printf '%s\n' "${{ secrets.SSH_KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Upload dist/ to web host
+        run: |
+          rsync -avz --delete \
+            -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.SFTP_PORT }}" \
+            dist/ "${{ secrets.SFTP_USER }}@${{ secrets.SFTP_HOST }}:${{ secrets.SFTP_PATH }}/"
+
+      - name: Remove SSH key
+        if: always()
+        run: rm -f ~/.ssh/deploy_key
