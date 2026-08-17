@@ -1,7 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import logo from "../assets/siteImages/ScenicPhotoToursLogo.png";
-import { links } from "../data/utils";
+import { credits, links, siteName } from "../data/utils";
 import SocialLinks from "./SocialLinks.astro";
 
 const currentYear = new Date().getFullYear();
@@ -17,7 +17,7 @@ const currentYear = new Date().getFullYear();
       <div class="mx-auto max-w-xs sm:mx-0">
         <div class="flex items-center justify-center gap-2 sm:justify-start">
           <Image src={logo} alt="" width={28} height={28} class="h-7 w-7 object-contain" />
-          <p class="text-lg font-normal text-primary">Scenic Photo Tours</p>
+          <p class="text-lg font-normal text-primary">{siteName}</p>
         </div>
         <p class="mt-3 text-sm leading-relaxed">
           Small-group photography expeditions to the world's most scenic, and least crowded, landscapes.
@@ -59,26 +59,23 @@ const currentYear = new Date().getFullYear();
     <div
       class="mt-12 flex flex-col items-center gap-3 border-t border-border/60 pt-6 text-xs tracking-wide text-secondary/80 sm:flex-row sm:justify-between"
     >
-      <p>© {currentYear} Scenic Photo Tours. All rights reserved.</p>
+      <p>© {currentYear} {siteName}. All rights reserved.</p>
       <p>
-        Designed by{" "}
-        <a
-          href="https://github.com/iain-kirkham"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="text-secondary/80 transition-colors duration-200 hover:text-primary"
-        >
-          Iain Kirkham
-        </a>{" "}
-        &amp;{" "}
-        <a
-          href="https://github.com/mrosevere"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="text-secondary/80 transition-colors duration-200 hover:text-primary"
-        >
-          Mark Rosevere
-        </a>
+        Designed by {
+          credits.map((person, index) => (
+            <>
+              {index > 0 && " & "}
+              <a
+                href={person.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-secondary/80 transition-colors duration-200 hover:text-primary"
+              >
+                {person.name}
+              </a>
+            </>
+          ))
+        }
       </p>
     </div>
   </div>
