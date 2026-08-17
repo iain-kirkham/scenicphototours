@@ -1,0 +1,3 @@
+# Keep line endings consistent between Windows checkouts and Linux CI runners,
+# so `npm run check` gives the same result everywhere.
+* text=auto eol=lf
