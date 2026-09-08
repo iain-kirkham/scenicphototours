@@ -14,4 +14,12 @@ export default defineConfig({
 		trace: "on-first-retry",
 	},
 	projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
+	// In CI, Playwright starts and tears down `astro preview` itself.
+	// Locally, reuse the self-managed `astro dev --background` server (see CLAUDE.md)
+	// instead of spawning a second one.
+	webServer: {
+		command: "npm run preview",
+		url: "http://localhost:4321",
+		reuseExistingServer: !process.env.CI,
+	},
 });

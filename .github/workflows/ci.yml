@@ -58,18 +58,8 @@ jobs:
       - name: Build site
         run: npm run build
 
-      - name: Start preview server
-        run: npm run preview
-
-      - name: Wait for server
-        run: npx wait-on http://localhost:4321 --timeout 60000
-
       - name: Run Playwright tests
         run: npm run test:e2e
-
-      - name: Stop preview server
-        if: always()
-        run: npx astro preview stop
 
       - name: Upload Playwright report
         if: failure()
